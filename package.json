@@ -1,0 +1,25 @@
+{
+  "name": "frontend-project2",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vladimir Kuryatnikov",
+  "license": "ISC",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mirgord/frontend-project-lvl2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mirgord/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/Mirgord/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^6.1.0"
+  }
+}

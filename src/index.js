@@ -1,10 +1,10 @@
-import  Command  from 'commander';
+import program from 'commander';
 
+const getConfiguration = () => program
+    .version('1.0.0')
+    .description('Compares two configuration files and shows a difference.')
+    .helpOption('-h, --help' ,  'output usage information' ) 
+    .addHelpCommand(false)
+    .parse(process.argv);
 
-
-const getOptions = () => {
-const program = Command.option(-V, --version, 'output the version number');
-program.version('0.0.1');
-};
-
-export default getOptions;
+export default getConfiguration;

@@ -10,7 +10,7 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
-  "main": "../src/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mirgord/frontend-project-lvl2.git"

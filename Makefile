@@ -1,11 +1,9 @@
 install:
 	npm install
-test-coverage:
-	npm test -- --coverage --coverageProvider=v8
 gendiff:
 	node bin/gendiff.js
 test:
-	npm test
+	npx -n --experimental-vm-modules jest --watch
 lint:
 	npx eslint .
 publishing:

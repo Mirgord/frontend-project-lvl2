@@ -1,6 +1,12 @@
-import { genDiff, fs } from '../src/index.js';
+import { dirname, path } from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import genDiff from '../src/index.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
+const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8').toString();
 test('diffjsonfiles', () => {
-  const data = fs.readFileSync('/home/vladimir/frontend-project-lvl2/__tests__/__fixtures__/testjson').toString();
-  expect(genDiff('filepath1.json', 'filepath2.json')).toEqual(data);
+  expect(genDiff('filepath1.json', 'filepath2.json')).toEqual(readFile('expected_file_json'));
 });

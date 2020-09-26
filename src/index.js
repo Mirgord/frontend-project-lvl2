@@ -1,9 +1,9 @@
+import path from 'path';
 import fs from 'fs';
 import _ from 'lodash';
-import path from 'path';
 
 const readFile = (filename) => {
-  const fullPath = path.resolve(process.cwd(), 'src', filename);
+  const fullPath = path.resolve(process.cwd(), '__tests__/__fixtures__', filename);
   const data = fs.readFileSync(fullPath).toString();
   return data;
 };
@@ -28,4 +28,4 @@ const genDiff = (path1, path2) => {
   return `{${diff}\n}`;
 };
 
-export { genDiff, fs };
+export default genDiff;

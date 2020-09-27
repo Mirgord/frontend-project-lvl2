@@ -19,10 +19,8 @@ const genDiff = (path1, path2) => {
       return `${acc} \n- ${key}: ${data1[key]}\n+ ${key}: ${data2[key]}`;
     } if (_.has(data1, key) && (!_.has(data2, key))) {
       return `${acc} \n- ${key}: ${data1[key]}`;
-    } if (!_.has(data1, key) && _.has(data2, key)) {
-      return `${acc} \n+ ${key}: ${data2[key]}`;
     }
-    return acc;
+    return `${acc} \n+ ${key}: ${data2[key]}`;
   }, '');
   console.log(`{${diff}\n}`);
   return `{${diff}\n}`;

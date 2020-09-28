@@ -10,3 +10,9 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 test('diffjsonfiles', () => {
   expect(genDiff('filepath1.json', 'filepath2.json')).toEqual(readFile('expected_file_json'));
 });
+test('diffymlfiles', () => {
+  expect(genDiff('filepath1.yml', 'filepath2.yml')).toEqual(readFile('expected_file_json'));
+});
+test('diffinifiles', () => {
+  expect(genDiff('filepath1.ini', 'filepath2.ini')).toEqual(readFile('expected_file_json'));
+});

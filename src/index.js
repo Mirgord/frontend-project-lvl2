@@ -35,6 +35,7 @@ const genDiff = (path1, path2) => {
     }
     return `${acc} \n+ ${key}: ${data2[key]}`;
   }, '');
+  console.log(`{${diff}\n}`);
   return `{${diff}\n}`;
 };
 

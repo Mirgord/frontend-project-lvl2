@@ -4,8 +4,6 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import _ from 'lodash';
 
-const step = 4;
-
 const parse = (data, format) => {
   if (format === '.json') {
     return JSON.parse(data);
@@ -23,47 +21,7 @@ const readFile = (filename) => {
   return parse(data, format);
 };
 
-const stringify = (data, depth) => {
-  if (!_.isObject(data)) {
-    return data;
-  }
-  const keys = _.keys(_.clone(data));
-  const tab = (' ').repeat(depth);
-  const result = keys.map((key) => {
-    if (_.isPlainObject(data[key])) {
-      return `    ${tab}${key}: ${stringify(data[key], depth + step)}`;
-    }
-    return `    ${tab}${key}: ${data[key]}`;
-  });
-  return `{\n${result.join('\n')}\n${tab}}`;
-};
-
-const stylish = (tree) => {
-  const iter = (subtree, depth) => {
-    const a = subtree.flatMap((item) => {
-      const {
-        type, key, value1, value2,
-      } = item;
-      const tab = (' ').repeat(depth);
-      if (type === 'unchanged') {
-        return `    ${tab}${key}: ${stringify(value1, depth + step)}`;
-      } if (type === 'nested') {
-        return `    ${tab}${key}: {\n${iter(value1, depth + step)}\n${tab}    }`;
-      } if (type === 'changed') {
-        return `${tab}  - ${key}: ${stringify(value1, depth + step)}\n${tab}  + ${key}: ${stringify(value2, depth + step)}`;
-      } if (type === 'removed') {
-        return `${tab}  - ${key}: ${stringify(value1, depth + step)}`;
-      }
-      return `${tab}  + ${key}: ${stringify(value1, depth + step)}`;
-    });
-    return `${a.join('\n')}`;
-  };
-  const initialDepth = 0;
-  const result = iter(tree, initialDepth);
-  return `{\n${result}\n}`;
-};
-
-const genDiff = (file1, file2) => {
+const gendiff = (file1, file2) => {
   const data1 = readFile(file1);
   const data2 = readFile(file2);
   const iter = (child1, child2) => {
@@ -83,7 +41,7 @@ const genDiff = (file1, file2) => {
       };
     });
   };
-  return stylish(iter(data1, data2));
+  return iter(data1, data2);
 };
 
-export default genDiff;
+export default gendiff;

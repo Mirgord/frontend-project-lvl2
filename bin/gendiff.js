@@ -8,11 +8,6 @@ program
   .arguments('<filepath1> <filepath2>')
   .description('Compares two configuration files and shows a difference.')
   .option('-f, --format <type>', 'output format', 'stylish')
-  .helpOption('-h, --help', 'output usage information')
-  .addHelpCommand(false)
-  .parse(process.argv);
-
-program
   .action((filepath1, filepath2) => {
     console.log(getFormatter(gendiff(filepath1, filepath2), program.format));
   })

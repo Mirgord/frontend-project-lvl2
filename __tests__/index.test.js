@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8').toString();
-test('diff_files', () => {
+test('diff_files_json', () => {
   expect(getFormatter(genDiff('file1.json', 'file2.json'), 'stylish')).toEqual(readFile('expected_stylish'));
   expect(getFormatter(genDiff('file1.json', 'file2.json'), 'json')).toEqual(readFile('expected_json'));
   expect(getFormatter(genDiff('file1.json', 'file2.json'), 'plain')).toEqual(readFile('expected_plain'));

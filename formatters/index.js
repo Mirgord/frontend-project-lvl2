@@ -1,6 +1,6 @@
 import plain from './plain.js';
 import stylish from './stylish.js';
-import jsonStringify from './json.js';
+import json from './json.js';
 
 const getFormatter = (data, format) => {
   switch (format) {
@@ -9,7 +9,7 @@ const getFormatter = (data, format) => {
     case 'plain':
       return plain(data);
     case 'json':
-      return jsonStringify(data);
+      return json(data);
     default:
       throw new Error(`Unknown order state: '${format}'!`);
   }

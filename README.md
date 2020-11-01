@@ -4,7 +4,7 @@
 [![Node CI](https://github.com/Mirgord/frontend-project-lvl2/workflows/Node%20CI/badge.svg)](https://github.com/Mirgord/frontend-project-lvl2/actions)
 
 ### Вычислитель отличий – программа определяющая разницу между двумя структурами данных.
-### Возможности утилиты:
+#### Возможности утилиты:
 #### Поддержка разных форматов входных форматов: yaml, json.
 #### Генерация отчета в виде plain text, stylish и json.
 

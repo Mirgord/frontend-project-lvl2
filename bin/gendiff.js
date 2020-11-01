@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import program from 'commander';
 import gendiff from '../src/index.js';
-import getFormatter from '../formatters/index.js';
+import getFormatter from '../src/formatters/index.js';
 
 program
   .version('1.0.0')

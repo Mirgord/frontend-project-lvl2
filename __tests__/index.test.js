@@ -2,7 +2,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import genDiff from '../src/index.js';
-import getFormatter from '../formatters/index.js';
+import getFormatter from '../src/formatters/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

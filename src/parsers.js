@@ -1,5 +1,4 @@
 import path from 'path';
-import ini from 'ini';
 import fs from 'fs';
 import yaml from 'js-yaml';
 
@@ -8,9 +7,8 @@ const parse = (data, format) => {
     return JSON.parse(data);
   } if (format === '.yml') {
     return yaml.safeLoad(data);
-  } if (format === '.ini') {
-    return ini.parse(data);
-  } throw new Error(`Unknown order state: '${format}'!`);
+  }
+  throw new Error(`Unknown order state: '${format}'!`);
 };
 
 const readFile = (filename) => {

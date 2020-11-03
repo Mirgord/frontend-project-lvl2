@@ -13,3 +13,8 @@ test('diff_files_json', () => {
   expect(getFormatter(genDiff('file1.json', 'file2.json'), 'json')).toEqual(readFile('expected_json'));
   expect(getFormatter(genDiff('file1.json', 'file2.json'), 'plain')).toEqual(readFile('expected_plain'));
 });
+test('diff_files_yml', () => {
+  expect(getFormatter(genDiff('file1.yml', 'file2.yml'), 'stylish')).toEqual(readFile('expected_stylish'));
+  expect(getFormatter(genDiff('file1.yml', 'file2.yml'), 'json')).toEqual(readFile('expected_json'));
+  expect(getFormatter(genDiff('file1.yml', 'file2.yml'), 'plain')).toEqual(readFile('expected_plain'));
+});

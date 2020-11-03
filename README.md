@@ -5,7 +5,7 @@
 
 ### Вычислитель отличий – программа определяющая разницу между двумя структурами данных.
 #### Возможности утилиты:
-#### Поддержка разных форматов входных форматов: yaml, json.
+#### Поддержка разных входных форматов: yaml, json, а так же абсолютных и относительных путей.
 #### Генерация отчета в виде plain text, stylish и json.
 
 ## Настройки
@@ -33,11 +33,6 @@ $ gendiff filepath1.json filepath2.json
 $ gendiff filepath1.yml filepath2.yml
 ```
 [![asciicast](https://asciinema.org/a/362624.svg)](https://asciinema.org/a/362624)
-
-```sh
-$ gendiff filepath1.ini filepath2.ini
-```
-[![asciicast](https://asciinema.org/a/362626.svg)](https://asciinema.org/a/362626)
 
 ### Сравнение файлов, имеющих вложенные структуры:
 

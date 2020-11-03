@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import readFile from './parsers.js';
 
-const gendiff = (file1, file2) => {
+const genDiff = (file1, file2) => {
   const data1 = readFile(file1);
   const data2 = readFile(file2);
   const iter = (child1, child2) => {
@@ -24,4 +24,4 @@ const gendiff = (file1, file2) => {
   return iter(data1, data2);
 };
 
-export default gendiff;
+export default genDiff;

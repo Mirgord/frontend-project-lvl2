@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 const step = 4;
+const offset = (' ').repeat(4);
 
 const stringify = (data, depth) => {
   if (!_.isObject(data)) {
@@ -10,9 +11,9 @@ const stringify = (data, depth) => {
   const tab = (' ').repeat(depth);
   const result = keys.map((key) => {
     if (_.isPlainObject(data[key])) {
-      return `    ${tab}${key}: ${stringify(data[key], depth + step)}`;
+      return `${offset}${tab}${key}: ${stringify(data[key], depth + step)}`;
     }
-    return `    ${tab}${key}: ${data[key]}`;
+    return `${offset}${tab}${key}: ${data[key]}`;
   });
   return `{\n${result.join('\n')}\n${tab}}`;
 };
@@ -24,9 +25,9 @@ const stylish = (tree) => {
       } = item;
       const tab = (' ').repeat(depth);
       if (type === 'unchanged') {
-        return `    ${tab}${key}: ${stringify(value1, depth + step)}`;
+        return `${offset}${tab}${key}: ${stringify(value1, depth + step)}`;
       } if (type === 'nested') {
-        return `    ${tab}${key}: {\n${iter(value1, depth + step)}\n${tab}    }`;
+        return `${offset}${tab}${key}: {\n${iter(value1, depth + step)}\n${tab}${offset}}`;
       } if (type === 'changed') {
         return `${tab}  - ${key}: ${stringify(value1, depth + step)}\n${tab}  + ${key}: ${stringify(value2, depth + step)}`;
       } if (type === 'removed') {

@@ -13,20 +13,20 @@ const plain = (tree) => {
   const iter = (subtree, acc) => {
     const result = subtree.flatMap((item) => {
       const {
-        type, key, value1, value2,
+        type, key, children, value, value1, value2,
       } = item;
       const path = `${acc}${key}`;
       switch (type) {
         case 'unchanged':
           return [];
         case 'nested':
-          return `${iter(value1, `${path}.`)}`;
+          return `${iter(children, `${path}.`)}`;
         case 'changed':
           return `Property '${path}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
         case 'removed':
           return `Property '${path}' was removed`;
         case 'added':
-          return `Property '${path}' was added with value: ${stringify(value1)}`;
+          return `Property '${path}' was added with value: ${stringify(value)}`;
         default:
           throw new Error(`Unknown order state: '${type}'!`);
       }

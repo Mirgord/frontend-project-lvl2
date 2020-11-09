@@ -26,22 +26,22 @@ const stylish = (tree) => {
   const iter = (subtree, depth) => {
     const result = subtree.flatMap((item) => {
       const {
-        type, key, value1, value2,
+        type, key, children, value, value1, value2,
       } = item;
       const depthOfStep = depth + step;
       const tab1 = indent(depth);
       const tab2 = indent(offset);
       switch (type) {
         case 'unchanged':
-          return `${tab2}${tab1}${key}: ${stringify(value1, depthOfStep)}`;
+          return `${tab2}${tab1}${key}: ${stringify(value, depthOfStep)}`;
         case 'nested':
-          return `${tab2}${tab1}${key}: {\n${iter(value1, depthOfStep)}\n${tab1}${tab2}}`;
+          return `${tab2}${tab1}${key}: {\n${iter(children, depthOfStep)}\n${tab1}${tab2}}`;
         case 'changed':
           return `${tab1}  - ${key}: ${stringify(value1, depthOfStep)}\n${tab1}  + ${key}: ${stringify(value2, depthOfStep)}`;
         case 'removed':
-          return `${tab1}  - ${key}: ${stringify(value1, depthOfStep)}`;
+          return `${tab1}  - ${key}: ${stringify(value, depthOfStep)}`;
         case 'added':
-          return `${tab1}  + ${key}: ${stringify(value1, depthOfStep)}`;
+          return `${tab1}  + ${key}: ${stringify(value, depthOfStep)}`;
         default:
           throw new Error(`Unknown order state: '${type}'!`);
       }

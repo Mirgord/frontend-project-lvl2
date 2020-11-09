@@ -1,20 +1,19 @@
-import path from 'path';
-import fs from 'fs';
 import yaml from 'js-yaml';
+import readFile from './utils.js';
 
-const parse = (data, format) => {
-  if (format === '.json') {
-    return JSON.parse(data);
-  } if (format === '.yml') {
-    return yaml.safeLoad(data);
+const getFormat = (name) => name.split('.').slice(1).join(' ');
+
+const parse = (name) => {
+  const data = readFile(name);
+  const format = getFormat(name);
+  switch (format) {
+    case 'json':
+      return JSON.parse(data);
+    case 'yml':
+      return yaml.safeLoad(data);
+    default:
+      throw new Error(`Unknown order state: '${format}'!`);
   }
-  throw new Error(`Unknown order state: '${format}'!`);
 };
 
-const readFile = (filename) => {
-  const fullPath = path.resolve(process.cwd(), '__tests__/__fixtures__', filename);
-  const format = path.extname(fullPath);
-  const data = fs.readFileSync(fullPath).toString();
-  return parse(data, format);
-};
-export default readFile;
+export default parse;

@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import readFile from './parsers.js';
+import getFormatter from './formatters/index.js';
 
-const genDiff = (file1, file2) => {
+const buildDiff = (file1, file2, format) => {
   const data1 = readFile(file1);
   const data2 = readFile(file2);
   const iter = (child1, child2) => {
-    const keys = _.union(_.keys(_.clone(child1)), _.keys(_.clone(child2))).sort();
+    const keys = _.sortBy(_.union(_.keys(child1), _.keys(child2)));
     return keys.flatMap((key) => {
       if (_.isPlainObject(child1[key]) && _.isPlainObject(child2[key])) {
         return { type: 'nested', key: `${[key]}`, value1: iter(child1[key], child2[key]) };
@@ -21,7 +22,8 @@ const genDiff = (file1, file2) => {
       };
     });
   };
-  return iter(data1, data2);
+  const result = iter(data1, data2);
+  return getFormatter(result, format);
 };
 
-export default genDiff;
+export default buildDiff;

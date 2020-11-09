@@ -10,25 +10,32 @@ const stringify = (data) => {
 };
 
 const plain = (tree) => {
-  const iter = (subtree, node) => {
+  const iter = (subtree, acc) => {
     const result = subtree.flatMap((item) => {
       const {
         type, key, value1, value2,
       } = item;
-      if (type === 'unchanged') {
-        return [];
-      } if (type === 'nested') {
-        return `${iter(value1, `${node}${key}.`)}`;
-      } if (type === 'changed') {
-        return `Property '${node}${key}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
-      } if (type === 'removed') {
-        return `Property '${node}${key}' was removed`;
+      const path = `${acc}${key}`;
+      switch (type) {
+        case 'unchanged':
+          return [];
+        case 'nested':
+          return `${iter(value1, `${path}.`)}`;
+        case 'changed':
+          return `Property '${path}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
+        case 'removed':
+          return `Property '${path}' was removed`;
+        case 'added':
+          return `Property '${path}' was added with value: ${stringify(value1)}`;
+        default:
+          throw new Error(`Unknown order state: '${type}'!`);
       }
-      return `Property '${node}${key}' was added with value: ${stringify(value1)}`;
     });
-    return `${result.join('\n')}`;
+    return result.join('\n');
   };
-  const node = '';
-  return iter(tree, node);
+  const acc = '';
+  const result = iter(tree, acc);
+  console.log(result);
+  return result;
 };
 export default plain;

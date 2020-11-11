@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
 const step = 4;
-const offset = 4;
 
 const indent = (num) => (' ').repeat(num);
 
@@ -10,47 +9,45 @@ const stringify = (data, depth) => {
     return data;
   }
   const keys = _.keys(data);
-  const tab1 = indent(depth);
-  const tab2 = indent(offset);
+  const generateTab = indent(depth);
+  const tab = indent(step);
   const result = keys.map((key) => {
     const depthOfStep = depth + step;
-    if (_.isPlainObject(data[key])) {
-      return `${tab2}${tab1}${key}: ${stringify(data[key], depthOfStep)}`;
-    }
-    return `${tab2}${tab1}${key}: ${data[key]}`;
+    const prefix = `${tab}${generateTab}${key}`;
+    const suffix = _.isPlainObject(data[key]) ? stringify(data[key], depthOfStep) : `${data[key]}`;
+
+    return `${prefix}: ${suffix}`;
   });
-  return `{\n${result.join('\n')}\n${tab1}}`;
+  return `{\n${result.join('\n')}\n${generateTab}}`;
 };
 
 const stylish = (tree) => {
-  const iter = (subtree, depth) => {
+  const iter = (subtree, depth = 0) => {
     const result = subtree.flatMap((item) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
       const depthOfStep = depth + step;
-      const tab1 = indent(depth);
-      const tab2 = indent(offset);
+      const generateTab = indent(depth);
+      const tab = indent(step);
       switch (type) {
         case 'unchanged':
-          return `${tab2}${tab1}${key}: ${stringify(value, depthOfStep)}`;
+          return `${generateTab}${tab}${key}: ${stringify(value, depthOfStep)}`;
         case 'nested':
-          return `${tab2}${tab1}${key}: {\n${iter(children, depthOfStep)}\n${tab1}${tab2}}`;
+          return `${generateTab}${tab}${key}: {\n${iter(children, depthOfStep)}\n${tab}${generateTab}}`;
         case 'changed':
-          return `${tab1}  - ${key}: ${stringify(value1, depthOfStep)}\n${tab1}  + ${key}: ${stringify(value2, depthOfStep)}`;
+          return `${generateTab}  - ${key}: ${stringify(value1, depthOfStep)}\n${generateTab}  + ${key}: ${stringify(value2, depthOfStep)}`;
         case 'removed':
-          return `${tab1}  - ${key}: ${stringify(value, depthOfStep)}`;
+          return `${generateTab}  - ${key}: ${stringify(value, depthOfStep)}`;
         case 'added':
-          return `${tab1}  + ${key}: ${stringify(value, depthOfStep)}`;
+          return `${generateTab}  + ${key}: ${stringify(value, depthOfStep)}`;
         default:
-          throw new Error(`Unknown order state: '${type}'!`);
+          throw new Error(`Unknown: '${type}'!`);
       }
     });
     return result.join('\n');
   };
-  const initialDepth = 0;
-  const result = iter(tree, initialDepth);
-  console.log(`{\n${result}\n}`);
+  const result = iter(tree);
   return `{\n${result}\n}`;
 };
 export default stylish;

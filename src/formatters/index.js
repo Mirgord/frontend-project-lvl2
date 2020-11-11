@@ -2,7 +2,7 @@ import plain from './plain.js';
 import stylish from './stylish.js';
 import json from './json.js';
 
-const getFormatter = (data, format) => {
+const formatter = (data, format) => {
   switch (format) {
     case 'stylish':
       return stylish(data);
@@ -14,4 +14,4 @@ const getFormatter = (data, format) => {
       throw new Error(`Unknown order state: '${format}'!`);
   }
 };
-export default getFormatter;
+export default formatter;

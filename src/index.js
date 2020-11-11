@@ -1,29 +1,37 @@
 import _ from 'lodash';
 import parse from './parsers.js';
-import getFormatter from './formatters/index.js';
+import formatter from './formatters/index.js';
+import readFile from './utils.js';
 
-const buildDiff = (file1, file2, format) => {
-  const data1 = parse(file1);
-  const data2 = parse(file2);
-  const iter = (child1, child2) => {
-    const keys = _.sortBy(_.union(_.keys(child1), _.keys(child2)));
-    return keys.flatMap((key) => {
-      if (_.isPlainObject(child1[key]) && _.isPlainObject(child2[key])) {
-        return { type: 'nested', key: `${[key]}`, children: iter(child1[key], child2[key]) };
-      } if (_.has(child1, key) && (!_.has(child2, key))) {
-        return { type: 'removed', key: `${[key]}`, value: child1[key] };
-      } if (!_.has(child1, key) && (_.has(child2, key))) {
-        return { type: 'added', key: `${[key]}`, value: child2[key] };
-      } if (_.has(child1, key) && _.has(child2, key) && child1[key] === child2[key]) {
-        return { type: 'unchanged', key: `${[key]}`, value: child1[key] };
-      }
-      return {
-        type: 'changed', key: `${[key]}`, value1: child1[key], value2: child2[key],
-      };
-    });
-  };
-  const result = iter(data1, data2);
-  return getFormatter(result, format);
+const buildTree = (obj1, obj2) => {
+  const keys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
+  return keys.flatMap((key) => {
+    if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
+      return { type: 'nested', key, children: buildTree(obj1[key], obj2[key]) };
+    } if (_.has(obj1, key) && (!_.has(obj2, key))) {
+      return { type: 'removed', key, value: obj1[key] };
+    } if (!_.has(obj1, key) && (_.has(obj2, key))) {
+      return { type: 'added', key, value: obj2[key] };
+    } if (_.has(obj1, key) && _.has(obj2, key) && obj1[key] === obj2[key]) {
+      return { type: 'unchanged', key, value: obj1[key] };
+    }
+    return {
+      type: 'changed', key, value1: obj1[key], value2: obj2[key],
+    };
+  });
+};
+
+const format = (name) => name.split('.').slice(1).join(' ');
+
+const buildDiff = (filepath1, filepath2, formatName) => {
+  const data1 = readFile(filepath1);
+  const data2 = readFile(filepath2);
+  const file1Format = format(filepath1);
+  const file2Format = format(filepath2);
+  const parsedData1 = parse(data1, file1Format);
+  const parsedData2 = parse(data2, file2Format);
+  const tree = buildTree(parsedData1, parsedData2);
+  return formatter(tree, formatName);
 };
 
 export default buildDiff;

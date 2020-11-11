@@ -10,12 +10,12 @@ const stringify = (data) => {
 };
 
 const plain = (tree) => {
-  const iter = (subtree, acc) => {
+  const iter = (subtree, fullpath = '') => {
     const result = subtree.flatMap((item) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
-      const path = `${acc}${key}`;
+      const path = `${fullpath}${key}`;
       switch (type) {
         case 'unchanged':
           return [];
@@ -28,14 +28,12 @@ const plain = (tree) => {
         case 'added':
           return `Property '${path}' was added with value: ${stringify(value)}`;
         default:
-          throw new Error(`Unknown order state: '${type}'!`);
+          throw new Error(`Unknown: '${type}'!`);
       }
     });
     return result.join('\n');
   };
-  const acc = '';
-  const result = iter(tree, acc);
-  console.log(result);
+  const result = iter(tree);
   return result;
 };
 export default plain;

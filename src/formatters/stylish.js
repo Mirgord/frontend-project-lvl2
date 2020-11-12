@@ -11,8 +11,8 @@ const stringify = (data, depth) => {
   const keys = _.keys(data);
   const generateTab = indent(depth);
   const tab = indent(step);
+  const depthOfStep = depth + step;
   const result = keys.map((key) => {
-    const depthOfStep = depth + step;
     const prefix = `${tab}${generateTab}${key}`;
     const suffix = _.isPlainObject(data[key]) ? stringify(data[key], depthOfStep) : `${data[key]}`;
 

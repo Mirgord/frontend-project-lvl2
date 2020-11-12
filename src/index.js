@@ -1,6 +1,7 @@
 import _ from 'lodash';
+import path from 'path';
 import parse from './parsers.js';
-import formatter from './formatters/index.js';
+import format from './formatters/index.js';
 import readFile from './utils.js';
 
 const buildTree = (obj1, obj2) => {
@@ -20,18 +21,20 @@ const buildTree = (obj1, obj2) => {
     };
   });
 };
+const getFormat = (dataFormat) => path.extname(dataFormat).slice(1);
 
-const format = (name) => name.split('.').slice(1).join(' ');
+const getData = (filepath) => {
+  const data = readFile(filepath);
+  const formatName = getFormat(filepath);
+  const parsedData = parse(data, formatName);
+  return parsedData;
+};
 
 const buildDiff = (filepath1, filepath2, formatName) => {
-  const data1 = readFile(filepath1);
-  const data2 = readFile(filepath2);
-  const file1Format = format(filepath1);
-  const file2Format = format(filepath2);
-  const parsedData1 = parse(data1, file1Format);
-  const parsedData2 = parse(data2, file2Format);
-  const tree = buildTree(parsedData1, parsedData2);
-  return formatter(tree, formatName);
+  const data1 = getData(filepath1);
+  const data2 = getData(filepath2);
+  const tree = buildTree(data1, data2);
+  return format(tree, formatName);
 };
 
 export default buildDiff;

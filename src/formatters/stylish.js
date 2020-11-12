@@ -4,43 +4,47 @@ const step = 4;
 
 const indent = (num) => (' ').repeat(num);
 
-const stringify = (data, depth) => {
+const tabFormatter = (depth) => {
+  const generateTab = indent(depth);
+  const tab = indent(step);
+  return ([generateTab, tab]);
+};
+
+const stringify = (data, initialDepth) => {
   if (!_.isObject(data)) {
     return data;
   }
   const keys = _.keys(data);
-  const generateTab = indent(depth);
-  const tab = indent(step);
-  const depthOfStep = depth + step;
+  const [tabedProgression, tab] = tabFormatter(initialDepth);
+  const depth = initialDepth + step;
   const result = keys.map((key) => {
-    const prefix = `${tab}${generateTab}${key}`;
-    const suffix = _.isPlainObject(data[key]) ? stringify(data[key], depthOfStep) : `${data[key]}`;
+    const prefix = `${tab}${tabedProgression}${key}`;
+    const suffix = _.isPlainObject(data[key]) ? stringify(data[key], depth) : `${data[key]}`;
 
     return `${prefix}: ${suffix}`;
   });
-  return `{\n${result.join('\n')}\n${generateTab}}`;
+  return `{\n${result.join('\n')}\n${tabedProgression}}`;
 };
 
 const stylish = (tree) => {
-  const iter = (subtree, depth = 0) => {
+  const iter = (subtree, initialDepth = 0) => {
     const result = subtree.flatMap((item) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
-      const depthOfStep = depth + step;
-      const generateTab = indent(depth);
-      const tab = indent(step);
+      const depth = initialDepth + step;
+      const [tabedProgression, tab] = tabFormatter(initialDepth);
       switch (type) {
         case 'unchanged':
-          return `${generateTab}${tab}${key}: ${stringify(value, depthOfStep)}`;
+          return `${tabedProgression}${tab}${key}: ${stringify(value, depth)}`;
         case 'nested':
-          return `${generateTab}${tab}${key}: {\n${iter(children, depthOfStep)}\n${tab}${generateTab}}`;
+          return `${tabedProgression}${tab}${key}: {\n${iter(children, depth)}\n${tab}${tabedProgression}}`;
         case 'changed':
-          return `${generateTab}  - ${key}: ${stringify(value1, depthOfStep)}\n${generateTab}  + ${key}: ${stringify(value2, depthOfStep)}`;
+          return `${tabedProgression}  - ${key}: ${stringify(value1, depth)}\n${tabedProgression}  + ${key}: ${stringify(value2, depth)}`;
         case 'removed':
-          return `${generateTab}  - ${key}: ${stringify(value, depthOfStep)}`;
+          return `${tabedProgression}  - ${key}: ${stringify(value, depth)}`;
         case 'added':
-          return `${generateTab}  + ${key}: ${stringify(value, depthOfStep)}`;
+          return `${tabedProgression}  + ${key}: ${stringify(value, depth)}`;
         default:
           throw new Error(`Unknown: '${type}'!`);
       }

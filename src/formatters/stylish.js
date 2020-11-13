@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const step = 4;
 
-const tabFormatter = (depth) => [depth, step].map((num) => (' ').repeat(num));
+const makeTab = (count) => (' ').repeat(count);
 
 const stepIntoDepths = (depth) => depth + step;
 
@@ -11,10 +11,11 @@ const stringify = (data, initialDepth) => {
     return data;
   }
   const keys = _.keys(data);
-  const [tabedProgression, tab] = tabFormatter(initialDepth);
   const depth = stepIntoDepths(initialDepth);
+  const tabedProgression = makeTab(initialDepth);
+  const tab = makeTab(step);
   const result = keys.map((key) => {
-    const prefix = `${tab}${tabedProgression}${key}`;
+    const prefix = `${tabedProgression}${tab}${key}`;
     const suffix = _.isPlainObject(data[key]) ? stringify(data[key], depth) : `${data[key]}`;
 
     return `${prefix}: ${suffix}`;
@@ -29,7 +30,8 @@ const stylish = (tree) => {
         type, key, children, value, value1, value2,
       } = item;
       const depth = stepIntoDepths(initialDepth);
-      const [tabedProgression, tab] = tabFormatter(initialDepth);
+      const tabedProgression = makeTab(initialDepth);
+      const tab = makeTab(step);
       switch (type) {
         case 'unchanged':
           return `${tabedProgression}${tab}${key}: ${stringify(value, depth)}`;

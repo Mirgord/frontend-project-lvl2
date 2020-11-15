@@ -1,13 +1,13 @@
 import buildDiff from '../src/index.js';
-import readFile from '../src/utils.js';
+import { readFile, path } from '../src/utils.js';
 
-const path = '__tests__/__fixtures__/';
+const makeFixturePath = (filename) => path.join('__tests__/__fixtures__/', `${filename}`);
 
 test.each(['yml', 'json'])('diff_files', (format) => {
-  expect(buildDiff(`${path}file1.${format}`, `${path}file2.${format}`, 'stylish'))
-    .toEqual(readFile(`${path}expected_stylish`));
-  expect(buildDiff(`${path}file1.${format}`, `${path}file2.${format}`, 'json'))
-    .toEqual(readFile(`${path}expected_json`));
-  expect(buildDiff(`${path}file1.${format}`, `${path}file2.${format}`, 'plain'))
-    .toEqual(readFile(`${path}expected_plain`));
+  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`), 'stylish'))
+    .toEqual(readFile(makeFixturePath('expected_stylish')));
+  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`), 'json'))
+    .toEqual(readFile(makeFixturePath('expected_json')));
+  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`), 'plain'))
+    .toEqual(readFile(makeFixturePath('expected_plain')));
 });

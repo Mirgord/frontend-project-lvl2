@@ -6,43 +6,43 @@ const makeTab = (count) => (' ').repeat(count);
 
 const stepIntoDepths = (depth) => depth + step;
 
-const stringify = (data, initialDepth) => {
+const stringify = (data, depth) => {
   if (!_.isObject(data)) {
     return data;
   }
   const keys = _.keys(data);
-  const depth = stepIntoDepths(initialDepth);
-  const tabedProgression = makeTab(initialDepth);
+  const deepening = stepIntoDepths(depth);
+  const tabedSum = makeTab(depth);
   const tab = makeTab(step);
   const result = keys.map((key) => {
-    const prefix = `${tabedProgression}${tab}${key}`;
-    const suffix = _.isPlainObject(data[key]) ? stringify(data[key], depth) : `${data[key]}`;
+    const prefix = `${tabedSum}${tab}${key}`;
+    const suffix = _.isPlainObject(data[key]) ? stringify(data[key], deepening) : `${data[key]}`;
 
     return `${prefix}: ${suffix}`;
   });
-  return `{\n${result.join('\n')}\n${tabedProgression}}`;
+  return `{\n${result.join('\n')}\n${tabedSum}}`;
 };
 
 const stylish = (tree) => {
-  const iter = (subtree, initialDepth = 0) => {
+  const iter = (subtree, depth = 0) => {
     const result = subtree.flatMap((item) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
-      const depth = stepIntoDepths(initialDepth);
-      const tabedProgression = makeTab(initialDepth);
+      const deepening = stepIntoDepths(depth);
+      const tabedSum = makeTab(depth);
       const tab = makeTab(step);
       switch (type) {
         case 'unchanged':
-          return `${tabedProgression}${tab}${key}: ${stringify(value, depth)}`;
+          return `${tabedSum}${tab}${key}: ${stringify(value, deepening)}`;
         case 'nested':
-          return `${tabedProgression}${tab}${key}: {\n${iter(children, depth)}\n${tab}${tabedProgression}}`;
+          return `${tabedSum}${tab}${key}: {\n${iter(children, deepening)}\n${tab}${tabedSum}}`;
         case 'changed':
-          return `${tabedProgression}  - ${key}: ${stringify(value1, depth)}\n${tabedProgression}  + ${key}: ${stringify(value2, depth)}`;
+          return `${tabedSum}  - ${key}: ${stringify(value1, deepening)}\n${tabedSum}  + ${key}: ${stringify(value2, deepening)}`;
         case 'removed':
-          return `${tabedProgression}  - ${key}: ${stringify(value, depth)}`;
+          return `${tabedSum}  - ${key}: ${stringify(value, deepening)}`;
         case 'added':
-          return `${tabedProgression}  + ${key}: ${stringify(value, depth)}`;
+          return `${tabedSum}  + ${key}: ${stringify(value, deepening)}`;
         default:
           throw new Error(`Unknown: '${type}'!`);
       }

@@ -15,18 +15,18 @@ const plain = (tree) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
-      const path = `${fullpath}${key}`;
+      const propertyPath = `${fullpath}${key}`;
       switch (type) {
         case 'unchanged':
           return [];
         case 'nested':
-          return `${iter(children, `${path}.`)}`;
+          return `${iter(children, `${propertyPath}.`)}`;
         case 'changed':
-          return `Property '${path}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
+          return `Property '${propertyPath}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
         case 'removed':
-          return `Property '${path}' was removed`;
+          return `Property '${propertyPath}' was removed`;
         case 'added':
-          return `Property '${path}' was added with value: ${stringify(value)}`;
+          return `Property '${propertyPath}' was added with value: ${stringify(value)}`;
         default:
           throw new Error(`Unknown: '${type}'!`);
       }

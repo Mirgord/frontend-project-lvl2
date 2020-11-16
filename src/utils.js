@@ -7,4 +7,4 @@ const readFile = (filepath) => {
   return data;
 };
 
-export { readFile, path };
+export default readFile;

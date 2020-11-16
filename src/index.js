@@ -2,7 +2,7 @@ import _ from 'lodash';
 import path from 'path';
 import parse from './parsers.js';
 import format from './formatters/index.js';
-import { readFile } from './utils.js';
+import readFile from './utils.js';
 
 const buildTree = (obj1, obj2) => {
   const keys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));

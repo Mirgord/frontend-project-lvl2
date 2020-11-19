@@ -1,22 +1,36 @@
 import _ from 'lodash';
 
-const step = 4;
+const offset = 4;
+const indent = 1;
 
-const makeTab = (count) => (' ').repeat(count);
+// Пример результата:
+// 0) 0          {
+// 1) 4          ||||common: {
+// 2) 6+2        ||||||+|follow: false
 
-const stepIntoDepths = (depth) => depth + step;
+/*
+ * размер отступа вычисляется по формуле глубина * размер шага,
+ * но нам нужно вписать в этот отступ переданный символ
+ */
+const padSymbol = (symbol, depth) => {
+  const suffix = `${symbol} `;
+  const prefixLength = depth * offset - suffix.length;
+  const prefix = ' '.repeat(prefixLength);
+  return `${prefix}${suffix}`;
+};
 
 const stringify = (data, depth) => {
   if (!_.isObject(data)) {
     return data;
   }
   const keys = _.keys(data);
-  const deepening = stepIntoDepths(depth);
-  const tabedSum = makeTab(depth);
-  const tab = makeTab(step);
+  const tabedSum = padSymbol(' ', depth);
+  const tab = padSymbol(' ', indent);
   const result = keys.map((key) => {
     const prefix = `${tabedSum}${tab}${key}`;
-    const suffix = _.isPlainObject(data[key]) ? stringify(data[key], deepening) : `${data[key]}`;
+    const suffix = _.isPlainObject(data[key])
+      ? stringify(data[key], depth + 1)
+      : `${data[key]}`;
 
     return `${prefix}: ${suffix}`;
   });
@@ -24,27 +38,30 @@ const stringify = (data, depth) => {
 };
 
 const stylish = (tree) => {
-  const iter = (subtree, depth = 0) => {
+  const iter = (subtree, depth = 1) => {
     const result = subtree.flatMap((item) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
-      const deepening = stepIntoDepths(depth);
-      const tabedSum = makeTab(depth);
-      const tab = makeTab(step);
       switch (type) {
         case 'unchanged':
-          return `${tabedSum}${tab}${key}: ${stringify(value, deepening)}`;
+          return `${padSymbol(' ', depth)}${key}: ${stringify(value, depth)}`;
         case 'nested':
-          return `${tabedSum}${tab}${key}: {\n${iter(children, deepening)}\n${tab}${tabedSum}}`;
+          return `${padSymbol(' ', depth)}${key}: {\n${iter(
+            children,
+            depth + indent,
+          )}\n${padSymbol(' ', depth)}}`;
         case 'changed':
-          return `${tabedSum}  - ${key}: ${stringify(value1, deepening)}\n${tabedSum}  + ${key}: ${stringify(value2, deepening)}`;
+          return `${padSymbol('-', depth)}${key}: ${stringify(
+            value1,
+            depth,
+          )}\n${padSymbol('+', depth)}${key}: ${stringify(value2, depth)}`;
         case 'removed':
-          return `${tabedSum}  - ${key}: ${stringify(value, deepening)}`;
+          return `${padSymbol('-', depth)}${key}: ${stringify(value, depth)}`;
         case 'added':
-          return `${tabedSum}  + ${key}: ${stringify(value, deepening)}`;
+          return `${padSymbol('+', depth)}${key}: ${stringify(value, depth)}`;
         default:
-          throw new Error(`Unknown: '${type}'!`);
+          throw new Error(`Unknown: type: '${type}'!`);
       }
     });
     return result.join('\n');

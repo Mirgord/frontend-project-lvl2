@@ -29,7 +29,7 @@ const stringify = (data, depth) => {
   const result = keys.map((key) => {
     const prefix = `${nestedTabs}${tab}${key}`;
     const suffix = _.isPlainObject(data[key])
-      ? stringify(data[key], depth + 1)
+      ? stringify(data[key], depth + indent)
       : `${data[key]}`;
 
     return `${prefix}: ${suffix}`;

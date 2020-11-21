@@ -24,17 +24,17 @@ const stringify = (data, depth) => {
     return data;
   }
   const keys = _.keys(data);
-  const tabedSum = padSymbol(' ', depth);
+  const nestedTabs = padSymbol(' ', depth);
   const tab = padSymbol(' ', indent);
   const result = keys.map((key) => {
-    const prefix = `${tabedSum}${tab}${key}`;
+    const prefix = `${nestedTabs}${tab}${key}`;
     const suffix = _.isPlainObject(data[key])
       ? stringify(data[key], depth + 1)
       : `${data[key]}`;
 
     return `${prefix}: ${suffix}`;
   });
-  return `{\n${result.join('\n')}\n${tabedSum}}`;
+  return `{\n${result.join('\n')}\n${nestedTabs}}`;
 };
 
 const stylish = (tree) => {

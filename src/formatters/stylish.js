@@ -24,14 +24,12 @@ const stringify = (data, depth) => {
     return data;
   }
   const keys = _.keys(data);
-  const tab = padSymbol(' ', depth);
-  const indent = padSymbol(' ', step);
   const result = keys.map((key) => {
-    const prefix = `${indent}${tab}${key}`;
+    const prefix = `${padSymbol(' ', depth + step)}${key}`;
     const suffix = stringify(data[key], depth + step);
     return `${prefix}: ${suffix}`;
   });
-  return `{\n${result.join('\n')}\n${tab}}`;
+  return `{\n${result.join('\n')}\n${padSymbol(' ', depth)}}`;
 };
 
 const stylish = (tree) => {

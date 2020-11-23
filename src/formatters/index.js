@@ -11,6 +11,6 @@ export default (data, format) => {
     case 'json':
       return json(data);
     default:
-      throw new Error(`Unknown order state: '${format}'!`);
+      throw new Error(`Unknown: '${format}'!`);
   }
 };

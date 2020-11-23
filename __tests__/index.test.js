@@ -1,8 +1,7 @@
-import path from 'path';
 import buildDiff from '../src/index.js';
 import readFile from '../src/utils.js';
 
-const makeFixturePath = (filename) => path.join('__tests__/__fixtures__/', `${filename}`);
+const makeFixturePath = (filename) => `__tests__/__fixtures__/${filename}`;
 
 test.each(['yml', 'json'])('diff_Files', (format) => {
   expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`), 'stylish'))

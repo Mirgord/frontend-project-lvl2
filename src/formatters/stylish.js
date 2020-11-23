@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const offset = 4;
-const indent = 1;
+const level = 1;
 
 // Пример результата:
 // 0) 0          {
@@ -20,21 +20,18 @@ const padSymbol = (symbol, depth) => {
 };
 
 const stringify = (data, depth) => {
-  if (!_.isObject(data)) {
+  if (!_.isPlainObject(data)) {
     return data;
   }
   const keys = _.keys(data);
-  const nestedTabs = padSymbol(' ', depth);
-  const tab = padSymbol(' ', indent);
+  const tab = padSymbol(' ', depth);
+  const indent = padSymbol(' ', level);
   const result = keys.map((key) => {
-    const prefix = `${nestedTabs}${tab}${key}`;
-    const suffix = _.isPlainObject(data[key])
-      ? stringify(data[key], depth + indent)
-      : `${data[key]}`;
-
+    const prefix = `${indent}${tab}${key}`;
+    const suffix = stringify(data[key], depth + level);
     return `${prefix}: ${suffix}`;
   });
-  return `{\n${result.join('\n')}\n${nestedTabs}}`;
+  return `{\n${result.join('\n')}\n${tab}}`;
 };
 
 const stylish = (tree) => {
@@ -47,21 +44,15 @@ const stylish = (tree) => {
         case 'unchanged':
           return `${padSymbol(' ', depth)}${key}: ${stringify(value, depth)}`;
         case 'nested':
-          return `${padSymbol(' ', depth)}${key}: {\n${iter(
-            children,
-            depth + indent,
-          )}\n${padSymbol(' ', depth)}}`;
+          return `${padSymbol(' ', depth)}${key}: {\n${iter(children, depth + level)}\n${padSymbol(' ', depth)}}`;
         case 'changed':
-          return `${padSymbol('-', depth)}${key}: ${stringify(
-            value1,
-            depth,
-          )}\n${padSymbol('+', depth)}${key}: ${stringify(value2, depth)}`;
+          return `${padSymbol('-', depth)}${key}: ${stringify(value1, depth)}\n${padSymbol('+', depth)}${key}: ${stringify(value2, depth)}`;
         case 'removed':
           return `${padSymbol('-', depth)}${key}: ${stringify(value, depth)}`;
         case 'added':
           return `${padSymbol('+', depth)}${key}: ${stringify(value, depth)}`;
         default:
-          throw new Error(`Unknown: type: '${type}'!`);
+          throw new Error(`Unknown type: '${type}'!`);
       }
     });
     return result.join('\n');

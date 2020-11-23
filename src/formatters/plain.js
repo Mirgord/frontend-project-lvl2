@@ -28,7 +28,7 @@ const plain = (tree) => {
         case 'added':
           return `Property '${propertyPath}' was added with value: ${stringify(value)}`;
         default:
-          throw new Error(`Unknown: '${type}'!`);
+          throw new Error(`Unknown type: '${type}'!`);
       }
     });
     return result.join('\n');

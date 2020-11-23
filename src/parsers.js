@@ -7,7 +7,7 @@ const parse = (data, format) => {
     case 'yml':
       return yaml.safeLoad(data);
     default:
-      throw new Error(`Unknown : '${format}'!`);
+      throw new Error(`Unknown format: '${format}'!`);
   }
 };
 

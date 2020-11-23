@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const offset = 4;
-const level = 1;
+const step = 1;
 
 // Пример результата:
 // 0) 0          {
@@ -25,10 +25,10 @@ const stringify = (data, depth) => {
   }
   const keys = _.keys(data);
   const tab = padSymbol(' ', depth);
-  const indent = padSymbol(' ', level);
+  const indent = padSymbol(' ', step);
   const result = keys.map((key) => {
     const prefix = `${indent}${tab}${key}`;
-    const suffix = stringify(data[key], depth + level);
+    const suffix = stringify(data[key], depth + step);
     return `${prefix}: ${suffix}`;
   });
   return `{\n${result.join('\n')}\n${tab}}`;
@@ -44,7 +44,7 @@ const stylish = (tree) => {
         case 'unchanged':
           return `${padSymbol(' ', depth)}${key}: ${stringify(value, depth)}`;
         case 'nested':
-          return `${padSymbol(' ', depth)}${key}: {\n${iter(children, depth + level)}\n${padSymbol(' ', depth)}}`;
+          return `${padSymbol(' ', depth)}${key}: {\n${iter(children, depth + step)}\n${padSymbol(' ', depth)}}`;
         case 'changed':
           return `${padSymbol('-', depth)}${key}: ${stringify(value1, depth)}\n${padSymbol('+', depth)}${key}: ${stringify(value2, depth)}`;
         case 'removed':

@@ -10,12 +10,12 @@ const stringify = (data) => {
 };
 
 const plain = (tree) => {
-  const iter = (subtree, fullpath = '') => {
+  const iter = (subtree, currentPath = '') => {
     const result = subtree.flatMap((item) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
-      const propertyPath = `${fullpath}${key}`;
+      const propertyPath = `${currentPath}${key}`;
       switch (type) {
         case 'unchanged':
           return [];

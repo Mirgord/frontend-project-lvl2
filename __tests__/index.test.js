@@ -11,18 +11,10 @@ const expectedJson = readFile(makeFixturePath('expected_json'));
 const expectedPlain = readFile(makeFixturePath('expected_plain'));
 
 test.each(['yml', 'json'])('diff_In_Files', (format) => {
-  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`), 'stylish'))
-    .toEqual(expectedStylish);
-  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`), 'json'))
-    .toEqual(expectedJson);
-  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`), 'plain'))
-    .toEqual(expectedPlain);
-});
-test.each(['yml', 'json'])('difference_In_Files_With_Default_Format', (format) => {
-  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`)))
-    .toEqual(expectedStylish);
-  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`)))
-    .toEqual(expectedStylish);
-  expect(buildDiff(makeFixturePath(`file1.${format}`), makeFixturePath(`file2.${format}`)))
-    .toEqual(expectedStylish);
+  const filepath1 = makeFixturePath(`file1.${format}`);
+  const filepath2 = makeFixturePath(`file2.${format}`);
+  expect(buildDiff(filepath1, filepath2, 'stylish')).toEqual(expectedStylish);
+  expect(buildDiff(filepath1, filepath2, 'json')).toEqual(expectedJson);
+  expect(buildDiff(filepath1, filepath2, 'plain')).toEqual(expectedPlain);
+  expect(buildDiff(filepath1, filepath2)).toEqual(expectedStylish);
 });

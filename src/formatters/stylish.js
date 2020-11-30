@@ -3,15 +3,6 @@ import _ from 'lodash';
 const offset = 4;
 const step = 1;
 
-// Пример результата:
-// 0) 0          {
-// 1) 4          ||||common: {
-// 2) 6+2        ||||||+|follow: false
-
-/*
- * размер отступа вычисляется по формуле глубина * размер шага,
- * но нам нужно вписать в этот отступ переданный символ
- */
 const padSymbol = (symbol, depth) => {
   const suffix = `${symbol} `;
   const prefixLength = depth * offset - suffix.length;

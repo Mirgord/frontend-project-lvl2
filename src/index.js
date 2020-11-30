@@ -2,7 +2,7 @@ import path from 'path';
 import parse from './parsers.js';
 import format from './formatters/index.js';
 import readFile from './utils.js';
-import buildTree from './buildtree.js';
+import buildTree from './buildTree.js';
 
 const getFormat = (dataFormat) => path.extname(dataFormat).slice(1);
 

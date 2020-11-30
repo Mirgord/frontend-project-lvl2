@@ -10,7 +10,7 @@ const expectedStylish = readFile(makeFixturePath('expected_stylish'));
 const expectedJson = readFile(makeFixturePath('expected_json'));
 const expectedPlain = readFile(makeFixturePath('expected_plain'));
 
-test.each(['yml', 'json'])('Differences in files', (format) => {
+test.each(['yml', 'json'])('builds diff for "%s" format', (format) => {
   const filepath1 = makeFixturePath(`file1.${format}`);
   const filepath2 = makeFixturePath(`file2.${format}`);
   expect(buildDiff(filepath1, filepath2, 'stylish')).toEqual(expectedStylish);

@@ -11,12 +11,6 @@
 ## Установка
 
 ```sh
-$ npm install
-$ npm link
-```
-или
-
-```sh
 $ make setup
 ```
 ## Настройки

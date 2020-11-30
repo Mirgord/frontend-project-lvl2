@@ -14,6 +14,11 @@
 $ npm install
 $ npm link
 ```
+или
+
+```sh
+$ make setup
+```
 ## Настройки
 ```sh
 $ gendiff -h

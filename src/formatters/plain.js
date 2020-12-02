@@ -18,7 +18,7 @@ const plain = (tree) => {
       const propertyPath = `${currentPath}${key}`;
       switch (type) {
         case 'unchanged':
-          return [];
+          return null;
         case 'nested':
           return `${iter(children, `${propertyPath}.`)}`;
         case 'changed':
@@ -31,7 +31,7 @@ const plain = (tree) => {
           throw new Error(`Unknown type: '${type}'!`);
       }
     });
-    return result.join('\n');
+    return _.compact(result).join('\n');
   };
   const result = iter(tree);
   return result;

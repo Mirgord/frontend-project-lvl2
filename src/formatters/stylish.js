@@ -1,26 +1,23 @@
 import _ from 'lodash';
 
-const offset = 4;
 const step = 1;
+const indent = 4;
 
-const padSymbol = (symbol, depth) => {
-  const suffix = `${symbol} `;
-  const prefixLength = depth * offset - suffix.length;
-  const prefix = ' '.repeat(prefixLength);
-  return `${prefix}${suffix}`;
-};
+const getTab = (depth, gap = ' ') => _.padStart(gap, depth * indent);
 
 const stringify = (data, depth) => {
   if (!_.isPlainObject(data)) {
     return data;
   }
+  const tab = getTab(depth);
+  const offset = getTab(step);
   const keys = _.keys(data);
   const result = keys.map((key) => {
-    const prefix = `${padSymbol(' ', depth + step)}${key}`;
+    const prefix = `${tab}${offset}${key}`;
     const suffix = stringify(data[key], depth + step);
     return `${prefix}: ${suffix}`;
   });
-  return `{\n${result.join('\n')}\n${padSymbol(' ', depth)}}`;
+  return `{\n${result.join('\n')}\n${tab}}`;
 };
 
 const stylish = (tree) => {
@@ -29,17 +26,18 @@ const stylish = (tree) => {
       const {
         type, key, children, value, value1, value2,
       } = item;
+      const tab = getTab(depth);
       switch (type) {
         case 'unchanged':
-          return `${padSymbol(' ', depth)}${key}: ${stringify(value, depth)}`;
+          return `${getTab(depth, '  ')}${key}: ${stringify(value, depth)}`;
         case 'nested':
-          return `${padSymbol(' ', depth)}${key}: {\n${iter(children, depth + step)}\n${padSymbol(' ', depth)}}`;
+          return `${getTab(depth, '  ')}${key}: {\n${iter(children, depth + step)}\n${tab}}`;
         case 'changed':
-          return `${padSymbol('-', depth)}${key}: ${stringify(value1, depth)}\n${padSymbol('+', depth)}${key}: ${stringify(value2, depth)}`;
+          return `${getTab(depth, '- ')}${key}: ${stringify(value1, depth)}\n${getTab(depth, '+ ')}${key}: ${stringify(value2, depth)}`;
         case 'removed':
-          return `${padSymbol('-', depth)}${key}: ${stringify(value, depth)}`;
+          return `${getTab(depth, '- ')}${key}: ${stringify(value, depth)}`;
         case 'added':
-          return `${padSymbol('+', depth)}${key}: ${stringify(value, depth)}`;
+          return `${getTab(depth, '+ ')}${key}: ${stringify(value, depth)}`;
         default:
           throw new Error(`Unknown type: '${type}'!`);
       }

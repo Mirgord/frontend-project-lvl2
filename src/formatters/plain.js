@@ -20,7 +20,7 @@ const plain = (tree) => {
         case 'unchanged':
           return null;
         case 'nested':
-          return `${iter(children, `${propertyPath}.`)}`;
+          return iter(children, `${propertyPath}.`);
         case 'changed':
           return `Property '${propertyPath}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
         case 'removed':
@@ -31,9 +31,9 @@ const plain = (tree) => {
           throw new Error(`Unknown type: '${type}'!`);
       }
     });
-    return _.compact(result).join('\n');
+    return result;
   };
   const result = iter(tree);
-  return result;
+  return _.compact(result).join('\n');
 };
 export default plain;

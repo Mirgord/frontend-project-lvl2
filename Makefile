@@ -2,7 +2,7 @@ setup:
 	npm ci
 	npm link
 gendiff:
-	bin/gendiff.js
+	bin/genDiff.js
 test-coverage:
 	npm test -- --coverage --coverageProvider=v8
 test-watch:

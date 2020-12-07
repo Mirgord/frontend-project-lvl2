@@ -8,7 +8,7 @@
   "author": "Vladimir Kuryatnikov",
   "license": "ISC",
   "bin": {
-    "gendiff": "bin/gendiff.js"
+    "gendiff": "bin/genDiff.js"
   },
   "main": "index.js",
   "repository": {

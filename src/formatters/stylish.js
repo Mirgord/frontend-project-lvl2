@@ -12,12 +12,8 @@ const stringify = (data, depth) => {
   const keyIndent = ' '.repeat(indentSize + offset);
   const bracketIndent = ' '.repeat(indentSize);
   const keys = _.keys(data);
-  const result = keys.map((key) => {
-    const prefix = `${keyIndent}${key}`;
-    const suffix = stringify(data[key], depth + step);
-    return `${prefix}: ${suffix}`;
-  });
-  return `{\n${result}\n${bracketIndent}}`;
+  const result = keys.map((key) => `${keyIndent}${key}: ${stringify(data[key], depth + step)}`);
+  return `{\n${result.join('\n')}\n${bracketIndent}}`;
 };
 
 const stylish = (tree) => {
@@ -44,9 +40,9 @@ const stylish = (tree) => {
           throw new Error(`Unknown type: '${type}'!`);
       }
     });
-    return result;
+    return result.join('\n');
   };
   const result = iter(tree);
-  return `{\n${result.join().split(',').join('\n')}\n}`;
+  return `{\n${result}\n}`;
 };
 export default stylish;

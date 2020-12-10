@@ -6,6 +6,7 @@ import readFile from '../src/utils.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const makeFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
+
 const expectedStylish = readFile(makeFixturePath('expected_stylish'));
 const expectedJson = readFile(makeFixturePath('expected_json'));
 const expectedPlain = readFile(makeFixturePath('expected_plain'));

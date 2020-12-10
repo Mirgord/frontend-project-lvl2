@@ -2,7 +2,7 @@ import path from 'path';
 import parse from './parsers.js';
 import format from './formatters/index.js';
 import readFile from './utils.js';
-import genDiff from './genDiff.js';
+import buildTree from './buildTree.js';
 
 const getFormat = (dataFormat) => path.extname(dataFormat).slice(1);
 
@@ -16,7 +16,7 @@ const getData = (filepath) => {
 const buildDiff = (filepath1, filepath2, formatName = 'stylish') => {
   const data1 = getData(filepath1);
   const data2 = getData(filepath2);
-  const tree = genDiff(data1, data2);
+  const tree = buildTree(data1, data2);
   return format(tree, formatName);
 };
 

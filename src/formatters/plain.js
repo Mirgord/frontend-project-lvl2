@@ -14,12 +14,12 @@ const plain = (tree) => {
     const {
       type, key, children, value, value1, value2,
     } = item;
-    const propertyPath = `${currentPath}${key}`;
+    const propertyPath = _.compact([currentPath, key]).join('.');
     switch (type) {
       case 'unchanged':
         return null;
       case 'nested':
-        return iter(children, `${propertyPath}.`);
+        return iter(children, `${propertyPath}`);
       case 'changed':
         return `Property '${propertyPath}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
       case 'removed':

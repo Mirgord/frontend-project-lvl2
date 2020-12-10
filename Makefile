@@ -3,6 +3,8 @@ setup:
 	npm link
 gendiff:
 	bin/genDiff.js
+test:
+	npm test
 test-coverage:
 	npm test -- --coverage --coverageProvider=v8
 test-watch:

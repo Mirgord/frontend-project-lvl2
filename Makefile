@@ -1,8 +1,8 @@
 setup:
 	npm ci
 	npm link
-gendiff:
-	bin/genDiff.js
+install:
+	npm ci
 test:
 	npm test
 test-coverage:
